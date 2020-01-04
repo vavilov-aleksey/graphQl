@@ -3,7 +3,7 @@ const graphqlHTTP = require('express-graphql');
 const schema = require('../schema/schema');
 const mongoose = require('mongoose');
 
-const password = 1223;
+const password = 1234;
 
 const app = express();
 const PORT = 3000;
