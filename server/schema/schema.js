@@ -7,7 +7,8 @@ const {
   GraphQLSchema,
   GraphQLInt,
   GraphQLList,
-  GraphQLNonNull
+  GraphQLNonNull,
+  GraphQLBoolean
 } = graphql;
 
 const Movies = require('../models/movie');
@@ -19,6 +20,8 @@ const MovieType = new GraphQLObjectType({
     id: { type: GraphQLID},
     name: { type: GraphQLNonNull(GraphQLString) },
     genre: { type: GraphQLNonNull(GraphQLString) },
+    rate: { type: GraphQLInt },
+    watched: { type: GraphQLNonNull(GraphQLBoolean) },
     director: {
       type: DirectorType,
       resolve(parent, args) {
@@ -92,13 +95,17 @@ const Mutation = new GraphQLObjectType({
       args: {
         name: { type: GraphQLNonNull(GraphQLString) },
         genre: { type: GraphQLNonNull(GraphQLString) },
-        directorId: { type: GraphQLID }
+        directorId: { type: GraphQLID },
+        rate: { type: GraphQLInt },
+        watched: { type: GraphQLNonNull(GraphQLBoolean) },
       },
       resolve(parent, args) {
         const movie = new Movies({
           name: args.name,
           genre: args.genre,
-          directorId: args.directorId
+          directorId: args.directorId,
+          rate: args.rate,
+          watched: args.watched,
         });
         return movie.save();
       }
@@ -110,12 +117,20 @@ const Mutation = new GraphQLObjectType({
         id: { type: GraphQLNonNull(GraphQLID) },
         name: { type: GraphQLNonNull(GraphQLString) },
         genre: { type: GraphQLString },
-        directorId: { type: GraphQLID }
+        directorId: { type: GraphQLID },
+        rate: { type: GraphQLInt },
+        watched: { type: GraphQLNonNull(GraphQLBoolean) }
       },
       resolve(parent, args){
         return Movies.findByIdAndUpdate(
           args.id,
-          { $set: { name: args.name, genre: args.genre, directorId: args.directorId }},
+          { $set: {
+            name: args.name,
+            genre: args.genre,
+            directorId: args.directorId,
+            rate: args.rate,
+            watched: args.watched,
+          }},
           { new: true }
         )
       }

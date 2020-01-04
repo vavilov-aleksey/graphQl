@@ -2,12 +2,15 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const schema = require('../schema/schema');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
-const password = 1234;
+const password = 12345;
 
 const app = express();
-const PORT = 3000;
+const PORT = 8080;
 mongoose.connect(`mongodb+srv://dbVavilov:${password}@cluster0-3dfjp.mongodb.net/graphql-tutorial?retryWrites=true&w=majority`, { useUnifiedTopology: true })
+
+app.use(cors());
 
  app.use('/graphql', graphqlHTTP({
   schema,
