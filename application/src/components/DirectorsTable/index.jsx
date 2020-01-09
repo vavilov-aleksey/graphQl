@@ -29,9 +29,9 @@ export const DirectorsTable = () => {
     })
   };
 
-  const handleClickSave = () => {
-    // Error
-    addDirector( {"name": "test name", "age": 555});
+  const handleClickSave = (data) => {
+    const { name, age } = data;
+    addDirector( { variables: { name: name, age: age } });
   };
 
   if (loading) return 'Loading...';
