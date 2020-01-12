@@ -31,7 +31,13 @@ export const DirectorsTable = () => {
 
   const handleClickSave = (data) => {
     const { name, age } = data;
-    addDirector( { variables: { name: name, age: age } });
+
+    addDirector( {
+      variables: { name: name, age: age },
+      refetchQueries: [{ query: directorsQuery}]
+    });
+
+    handleClickClose();
   };
 
   if (loading) return 'Loading...';

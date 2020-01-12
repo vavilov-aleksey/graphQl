@@ -97,7 +97,7 @@ const Mutation = new GraphQLObjectType({
         genre: { type: GraphQLNonNull(GraphQLString) },
         directorId: { type: GraphQLID },
         rate: { type: GraphQLInt },
-        watched: { type: GraphQLNonNull(GraphQLBoolean) },
+        watched: { type: GraphQLBoolean },
       },
       resolve(parent, args) {
         const movie = new Movies({

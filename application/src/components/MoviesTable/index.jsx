@@ -1,12 +1,74 @@
 import React, {useState} from 'react';
-import { useQuery } from "react-apollo";
+import { useQuery, useMutation } from "react-apollo";
 import { moviesQuery } from "./queries";
 import { DialogMovie } from "../DialogMovie";
+import { addMovieMutation, deleteMovieMutation } from "../DialogMovie/mutation";
 
 export const MoviesTable = () => {
   const { loading, error, data } = useQuery(moviesQuery);
+  const [ addMovie ] = useMutation(addMovieMutation);
+  const [ deleteMovie ] = useMutation(deleteMovieMutation);
 
-  const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const [infoDialog, setInfoDialog] = useState({
+    open: false,
+    name: '',
+    genre: '',
+    directorId: '',
+    rate: 0,
+    watched: false
+  });
+
+  const handleClickOpen = (data) => {
+    setInfoDialog({
+      open: true,
+      ...data
+    })
+  };
+
+  const handleClickClose = () => {
+    setInfoDialog({
+      open: false,
+      name: '',
+      genre: '',
+      directorId: '',
+      rate: 0,
+      watched: false
+    })
+  };
+
+  const handleClickSave = (data) => {
+    const {
+      name,
+      genre,
+      directorId,
+      rate,
+      watched
+    } = data;
+
+    console.table(data)
+
+    addMovie( {
+      variables: {
+        name: name,
+        genre: genre,
+        directorId: directorId,
+        rate: rate || 0,
+        watched: Boolean(watched),
+      },
+      refetchQueries: [{ query: moviesQuery}]
+    });
+
+    handleClickClose();
+  };
+
+  const handleClickDelete = (idMovie) => {
+    deleteMovie({
+      variables: {
+        id: idMovie
+      },
+      refetchQueries: [{ query: moviesQuery}]
+    })
+  };
 
   if (loading) return 'Loading...';
   if (error) return 'Error';
@@ -16,7 +78,7 @@ export const MoviesTable = () => {
       <button
         className='btn-adding'
         title='Добавить фильм'
-        onClick={() => setIsOpenDialog(true)}
+        onClick={handleClickOpen}
       >
         +
       </button>
@@ -38,14 +100,24 @@ export const MoviesTable = () => {
               <tr key={movie.id} bgcolor={movie.watched ? '#D8FAE7' : '#FAD2C9'}>
                 <td>{movie.name}</td>
                 <td>{movie.genre}</td>
-                <td>{movie.director.name}</td>
+                <td>{movie.director ? movie.director.name : 'Нет данных'}</td>
                 <td>{movie.rate}</td>
                 <td>
-                  <input type='checkbox' defaultChecked={movie.watched}/>
+                  <input type='checkbox' disabled defaultChecked={movie.watched}/>
                 </td>
                 <td>
-                  <button>
+                  <button onClick={() => handleClickOpen({
+                    name: movie.name,
+                    genre: movie.genre,
+                    directorId: movie.director && movie.director.id,
+                    rate: movie.rate,
+                    watched: movie.watched
+                  })}>
                     edit
+                  </button>
+
+                  <button onClick={() => handleClickDelete(movie.id)}>
+                    delete
                   </button>
                 </td>
               </tr>
@@ -55,8 +127,9 @@ export const MoviesTable = () => {
       </table>
 
       <DialogMovie
-        open={isOpenDialog}
-        onClose={() => setIsOpenDialog(false)}
+        data={infoDialog}
+        onClose={handleClickClose}
+        onSave={handleClickSave}
       />
     </>
   )
