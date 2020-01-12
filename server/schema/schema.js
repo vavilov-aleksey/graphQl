@@ -119,7 +119,7 @@ const Mutation = new GraphQLObjectType({
         genre: { type: GraphQLString },
         directorId: { type: GraphQLID },
         rate: { type: GraphQLInt },
-        watched: { type: GraphQLNonNull(GraphQLBoolean) }
+        watched: { type: GraphQLBoolean }
       },
       resolve(parent, args){
         return Movies.findByIdAndUpdate(

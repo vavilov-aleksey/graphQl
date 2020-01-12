@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from 'react';
 
 export const DialogDirector = ({ data, onClose, onSave }) => {
-  const { open, name, age } = data;
+  const { open, id, name, age } = data;
 
   const [ dataForm, setDataForm ] = useState({
+    id: id,
     name: name,
     age: age
   });
 
   useEffect(() => {
     setDataForm({
+      id: data.id,
       name: data.name,
       age: data.age
     })

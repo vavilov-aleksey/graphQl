@@ -8,3 +8,20 @@ export const addDirectorMutation = gql`
     }
   }
 `;
+
+export const updateDirectorMutation = gql`
+    mutation updateDirector($id: ID!, $name: String!, $age: Int!) {
+        updateDirector(id: $id, name: $name, age: $age) {
+            name
+        }
+    }
+`;
+
+export const deleteDirectorMutation = gql`
+  mutation deleteDirector($id: ID!) {
+    deleteDirector(id: $id) {
+      id
+    }
+  }
+`;
+

@@ -7,6 +7,7 @@ export const DialogMovie = ({ data, onClose, onSave }) => {
 
   const {
     open,
+    id,
     name,
     genre,
     directorId,
@@ -15,6 +16,7 @@ export const DialogMovie = ({ data, onClose, onSave }) => {
   } = data;
 
   const [ dataForm, setDataForm ] = useState({
+    id: '',
     name: '',
     genre: '',
     directorId: 0,
@@ -24,6 +26,7 @@ export const DialogMovie = ({ data, onClose, onSave }) => {
 
   useEffect(() => {
     setDataForm({
+      id: data.id,
       name: data.name,
       genre: data.genre,
       directorId: data.directorId,

@@ -2,12 +2,17 @@ import React, {useState} from 'react';
 import { useQuery, useMutation } from "react-apollo";
 import { moviesQuery } from "./queries";
 import { DialogMovie } from "../DialogMovie";
-import { addMovieMutation, deleteMovieMutation } from "../DialogMovie/mutation";
+import {
+  addMovieMutation,
+  deleteMovieMutation,
+  updateMovieMutation
+} from "../DialogMovie/mutation";
 
 export const MoviesTable = () => {
   const { loading, error, data } = useQuery(moviesQuery);
   const [ addMovie ] = useMutation(addMovieMutation);
   const [ deleteMovie ] = useMutation(deleteMovieMutation);
+  const [ updateMovie ] = useMutation(updateMovieMutation);
 
   const [infoDialog, setInfoDialog] = useState({
     open: false,
@@ -38,6 +43,7 @@ export const MoviesTable = () => {
 
   const handleClickSave = (data) => {
     const {
+      id,
       name,
       genre,
       directorId,
@@ -47,16 +53,30 @@ export const MoviesTable = () => {
 
     console.table(data)
 
-    addMovie( {
-      variables: {
-        name: name,
-        genre: genre,
-        directorId: directorId,
-        rate: rate || 0,
-        watched: Boolean(watched),
-      },
-      refetchQueries: [{ query: moviesQuery}]
-    });
+    id
+    ? updateMovie( {
+        variables: {
+          id: id,
+          name: name,
+          genre: genre,
+          directorId: directorId,
+          rate: rate || 0,
+          watched: Boolean(watched),
+        },
+        refetchQueries: [{ query: moviesQuery}]
+      })
+    : addMovie( {
+        variables: {
+          name: name,
+          genre: genre,
+          directorId: directorId,
+          rate: rate || 0,
+          watched: Boolean(watched),
+        },
+        refetchQueries: [{ query: moviesQuery}]
+      });
+
+
 
     handleClickClose();
   };
@@ -75,13 +95,16 @@ export const MoviesTable = () => {
 
   return (
     <>
-      <button
-        className='btn-adding'
-        title='Добавить фильм'
-        onClick={handleClickOpen}
-      >
-        +
-      </button>
+      <div className="search-line">
+        <input type="text" onChange={() => {}} placeholder='Поиск фильма'/>
+        <button
+          className='btn-adding'
+          title='Добавить фильм'
+          onClick={handleClickOpen}
+        >
+          +
+        </button>
+      </div>
       <table border={1}>
         <caption>Список фильмов</caption>
         <thead>
@@ -107,6 +130,7 @@ export const MoviesTable = () => {
                 </td>
                 <td>
                   <button onClick={() => handleClickOpen({
+                    id: movie.id,
                     name: movie.name,
                     genre: movie.genre,
                     directorId: movie.director && movie.director.id,
