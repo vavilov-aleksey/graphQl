@@ -15,7 +15,7 @@ const Movies = require('../models/movie');
 const Directors = require('../models/director');
 
 const MovieType = new GraphQLObjectType({
-  name: 'Movie',
+  name: 'Movies',
   fields: () => ({
     id: { type: GraphQLID},
     name: { type: GraphQLNonNull(GraphQLString) },
@@ -169,18 +169,17 @@ const Query = new GraphQLObjectType({
 
     movies: {
       type: GraphQLList(MovieType),
-      resolve(parent, args) {
-        // return movies;
-        return Movies.find({})
-
+      args: { name: { type: GraphQLString }},
+      resolve(parent, { name }) {
+        return Movies.find({ name: { $regex: name, $options: 'i'}})
       }
     },
 
     directors: {
       type: GraphQLList(DirectorType),
-      resolve(parent, args) {
-        // return directors;
-        return Directors.find({})
+      args: { name: { type: GraphQLString }},
+      resolve(parent, { name }) {
+        return Directors.find({ name: { $regex: name, $options: 'i'}})
       }
     }
   }

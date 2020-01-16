@@ -91,3 +91,11 @@ form {
 .mui-select>select {
   padding-left: 15px;
 }
+
+.mui-tabs__bar {
+  background-color: rgba(0,0,0,0.05);
+}
+
+.mui-tabs__bar a{
+  cursor: pointer;
+}

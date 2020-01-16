@@ -8,11 +8,12 @@ import Option from 'muicss/lib/react/option';
 import Checkbox from 'muicss/lib/react/checkbox';
 
 export const DialogMovie = ({ data, onClose, onSave }) => {
-  const dataDirectors = useQuery(directorsQuery);
+  const dataDirectors = useQuery(directorsQuery, {
+    variables: { name: '' }
+  });
 
   const {
     open,
-    id,
     name,
     genre,
     directorId,
