@@ -50,44 +50,37 @@ export const MoviesTable = () => {
     })
   };
 
-  const handleClickSave = (data) => {
+  const optionRefetch = [
+    { query: moviesQuery, variables: { name: '' }},
+    { query: directorsQuery, variables: { name: '' }}
+  ];
+
+  const optionForUpdate = (data) => {
     const {
       id,
       name,
       genre,
       directorId,
-      rate,
+      rate = 0,
       watched
     } = data;
 
-    id
-    ? updateMovie( {
-        variables: {
-          id: id,
-          name: name,
-          genre: genre,
-          directorId: directorId,
-          rate: rate || 0,
-          watched: Boolean(watched),
-        },
-        refetchQueries: [
-          { query: moviesQuery, variables: { name: '' }},
-          { query: directorsQuery, variables: { name: '' }}
-        ]
-      })
-    : addMovie( {
-        variables: {
-          name: name,
-          genre: genre,
-          directorId: directorId,
-          rate: rate || 0,
-          watched: Boolean(watched),
-        },
-        refetchQueries: [
-          { query: moviesQuery, variables: { name: '' }},
-          { query: directorsQuery, variables: { name: '' }}
-        ]
-      });
+    return ({
+      variables: {
+        id,
+        name,
+        genre,
+        directorId,
+        rate,
+        watched: Boolean(watched),
+      },
+      refetchQueries: optionRefetch
+    })};
+
+  const handleClickSave = (data) => {
+    data.id
+      ? updateMovie( optionForUpdate(data))
+      : addMovie( optionForUpdate(data));
 
     handleClickClose();
   };
@@ -97,7 +90,7 @@ export const MoviesTable = () => {
       variables: {
         id: idMovie
       },
-      refetchQueries: [{ query: moviesQuery, variables: { name: '' }}]
+      refetchQueries: optionRefetch
     })
   };
 
@@ -139,9 +132,7 @@ export const MoviesTable = () => {
                   <td>{movie.genre}</td>
                   <td>{movie.director ? movie.director.name : 'Нет данных'}</td>
                   <td>{movie.rate}</td>
-                  <td>
-                    <input type='checkbox' disabled defaultChecked={movie.watched}/>
-                  </td>
+                  <td>{movie.watched ? 'Да' : 'Нет'}</td>
                   <td>
                     <Button
                       size="small"

@@ -11,6 +11,7 @@ import {
   updateDirectorMutation
 } from "../DialogDirector/mutations";
 import { BtnAdd } from "../BtnAdd";
+import { moviesQuery } from "../MoviesTable/queries";
 
 export const DirectorsTable = () => {
   const [name, setName] = useState('');
@@ -44,18 +45,23 @@ export const DirectorsTable = () => {
     })
   };
 
+  const optionRefetch = [
+    { query: directorsQuery, variables: { name: '' }},
+    { query: moviesQuery, variables: { name: '' }}
+  ];
+
   const handleClickSave = (data) => {
     const { id, name, age } = data;
 
     id
-    ? updateDirector( {
-        variables: { id: id, name: name, age: age },
-        refetchQueries: [{ query: directorsQuery, variables: { name: '' }}]
-      })
-    : addDirector( {
-        variables: { name: name, age: age },
-        refetchQueries: [{ query: directorsQuery, variables: { name: '' }}]
-      });
+      ? updateDirector( {
+          variables: { id: id, name: name, age: age },
+          refetchQueries: optionRefetch
+        })
+      : addDirector( {
+          variables: { name: name, age: age },
+          refetchQueries: optionRefetch
+        });
 
     handleClickClose();
   };
@@ -65,7 +71,7 @@ export const DirectorsTable = () => {
       variables: {
         id: idDirector
       },
-      refetchQueries: [{ query: directorsQuery, variables: { name: '' }}]
+      refetchQueries: optionRefetch
     })
   };
   const handleSearch = (strSearch) => {
