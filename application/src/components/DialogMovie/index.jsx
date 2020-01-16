@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { directorsQuery } from "./queries";
 import { useQuery } from "react-apollo";
+import Input from 'muicss/lib/react/input';
+import Button from 'muicss/lib/react/button';
+import Select from 'muicss/lib/react/select';
+import Option from 'muicss/lib/react/option';
+import Checkbox from 'muicss/lib/react/checkbox';
 
 export const DialogMovie = ({ data, onClose, onSave }) => {
   const dataDirectors = useQuery(directorsQuery);
@@ -72,46 +77,61 @@ export const DialogMovie = ({ data, onClose, onSave }) => {
 
   return (
     open ?
-      <div className="dialog">
-        <button
-          className='btn-close'
+      <div id='mui-overlay'>
+        <Button
+          variant="fab"
+          color="primary"
+          className='btn-fixed btn-close'
+          title='Закрыть'
           onClick={onClose}
-        >Закрыть</button>
+        >Закрыть</Button>
         <form action="#">
           <fieldset>
             <legend>{name ? 'Информация о фильме' : 'Добавить фильм'}</legend>
-            <label htmlFor="name">
-              Название фильма
-              <input id='name' type="text" defaultValue={name} onChange={changeInputName}/>
-            </label>
-            <label htmlFor="genre">
-              Жанр фильма
-              <input id='genre' type="text" defaultValue={genre} onChange={changeInputGenre}/>
-            </label>
-            <label htmlFor="rate">
-              Рейтинг фильма
-              <input id='rate' type="number" defaultValue={rate} onChange={changeInputRate}/>
-            </label>
-            <label htmlFor="director">
-              Режисер
-              <select name="Режисер" id="director" defaultValue={directorId ? directorId : 0} onChange={changeSelectedDirector}>
-                <option disabled value='0'>Выберете режисера</option>
-                {dataDirectors.data &&
-                dataDirectors.data.directors.map(director =>
-                  <option value={director.id} key={director.id} >
-                    {director.name}
-                  </option>
-                )}
-              </select>
-            </label>
-            <label htmlFor="watched" className='label-row'>
-              <input type="checkbox" id='watched' defaultChecked={watched} onChange={changeInputWatched}/>
-              Фильм просмотрен?
-            </label>
-            <button
-              className='btn-submit'
+            <Input
+              id='name'
+              label="Название"
+              type="text"
+              floatingLabel={true}
+              required={true}
+              defaultValue={name}
+              onChange={changeInputName}
+            />
+
+            <Input
+              id='genre'
+              label="Жанр"
+              type="text"
+              floatingLabel={true}
+              required={true}
+              defaultValue={genre}
+              onChange={changeInputGenre}
+            />
+
+            <Input
+              id='rate'
+              label="Рейтинг"
+              type="number"
+              floatingLabel={true}
+              required={true}
+              defaultValue={rate}
+              onChange={changeInputRate}
+            />
+
+            <Select name="Режисер" label="Режисер" defaultValue={directorId ? directorId : 0} onChange={changeSelectedDirector}>
+              <Option disabled value='0' label="Выберете режисера" />
+              {dataDirectors.data &&
+              dataDirectors.data.directors.map(director =>
+                <Option key={director.id} value={director.id} label={director.name} />
+              )}
+            </Select>
+
+            <Checkbox name="watched" label="Фильм просмотрен?" defaultChecked={watched} onChange={changeInputWatched}/>
+
+            <Button
+              color="primary"
               onClick={() => onSave(dataForm)}
-            >Сохранить</button>
+            >Сохранить</Button>
           </fieldset>
         </form>
       </div>

@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from 'react';
+import Input from 'muicss/lib/react/input';
+import Button from 'muicss/lib/react/button';
 
 export const DialogDirector = ({ data, onClose, onSave }) => {
   const { open, id, name, age } = data;
@@ -33,26 +35,41 @@ export const DialogDirector = ({ data, onClose, onSave }) => {
 
   return (
     open ?
-      <div className="dialog">
-        <button
-          className='btn-close'
+      <div id='mui-overlay'>
+        <Button
+          variant="fab"
+          color="primary"
+          className='btn-fixed btn-close'
+          title='Закрыть'
           onClick={onClose}
-        >Закрыть</button>
+        >Закрыть</Button>
         <form action="#">
           <fieldset>
             <legend>{name ? 'Информация о режисере' : 'Добавить режисера'}</legend>
-            <label htmlFor="name">
-              Ф.И.О режисера
-              <input id='name' type="text" defaultValue={name} onChange={changeInputName}/>
-            </label>
-            <label htmlFor="age">
-              Возраст режисера
-              <input id='age' type="number" defaultValue={age} onChange={changeInputAge}/>
-            </label>
-            <button
-              className='btn-submit'
+            <Input
+              id='name'
+              label="Ф.И.О"
+              type="text"
+              floatingLabel={true}
+              required={true}
+              defaultValue={name}
+              onChange={changeInputName}
+            />
+
+            <Input
+              id='age'
+              label="Возраст"
+              type="number"
+              floatingLabel={true}
+              required={true}
+              defaultValue={age}
+              onChange={changeInputAge}
+            />
+
+            <Button
+              color="primary"
               onClick={() => onSave(dataForm)}
-            >Сохранить</button>
+            >Сохранить</Button>
           </fieldset>
         </form>
       </div>

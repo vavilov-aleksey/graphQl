@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import { useQuery, useMutation } from "react-apollo";
 import { directorsQuery } from "./queries";
 import { DialogDirector } from "../DialogDirector";
+import Input from 'muicss/lib/react/input';
+import Button from 'muicss/lib/react/button';
+
 import {
   addDirectorMutation,
   deleteDirectorMutation,
@@ -69,18 +72,15 @@ export const DirectorsTable = () => {
 
   return (
     <>
-      <div className="search-line">
-        <input type="text" onChange={() => {}} placeholder='Поиск режисера'/>
-        <button
-          className='btn-adding'
-          title='Добавить режисера'
-          onClick={handleClickOpen}
-        >
-          +
-        </button>
-      </div>
-      <table border={1}>
-        <caption>Список режисеров</caption>
+      <Input label="Поиск режисера" floatingLabel={true} className='search-line'/>
+      <Button
+        variant="fab"
+        color="primary"
+        className='btn-fixed'
+        title='Добавить режисера'
+        onClick={handleClickOpen}
+      >+</Button>
+      <table className="mui-table mui-table--bordered">
         <thead>
           <tr>
             <th>Ф.И.О</th>
@@ -106,17 +106,23 @@ export const DirectorsTable = () => {
                   }
                 </td>
                 <td>
-                  <button onClick={() => handleClickOpen({
+                  <Button
+                    size="small"
+                    color='primary'
+                    onClick={() => handleClickOpen({
                     id: director.id,
                     name: director.name,
                     age: director.age
                   })}>
                     edit
-                  </button>
+                  </Button>
 
-                  <button onClick={() => handleClickDelete(director.id)}>
+                  <Button
+                    size="small"
+                    color='primary'
+                    onClick={() => handleClickDelete(director.id)}>
                     delete
-                  </button>
+                  </Button>
                 </td>
               </tr>
             )

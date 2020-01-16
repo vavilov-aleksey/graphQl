@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import { useQuery, useMutation } from "react-apollo";
 import { moviesQuery } from "./queries";
 import { DialogMovie } from "../DialogMovie";
+import Input from 'muicss/lib/react/input';
+import Button from 'muicss/lib/react/button';
+
 import {
   addMovieMutation,
   deleteMovieMutation,
@@ -95,18 +98,15 @@ export const MoviesTable = () => {
 
   return (
     <>
-      <div className="search-line">
-        <input type="text" onChange={() => {}} placeholder='Поиск фильма'/>
-        <button
-          className='btn-adding'
-          title='Добавить фильм'
-          onClick={handleClickOpen}
-        >
-          +
-        </button>
-      </div>
-      <table border={1}>
-        <caption>Список фильмов</caption>
+      <Input label="Поиск фильма" floatingLabel={true} className='search-line'/>
+      <Button
+        variant="fab"
+        color="primary"
+        className='btn-fixed'
+        title='Добавить фильм'
+        onClick={handleClickOpen}
+      >+</Button>
+      <table className="mui-table mui-table--bordered">
         <thead>
           <tr>
             <th>Название</th>
@@ -120,7 +120,7 @@ export const MoviesTable = () => {
         <tbody>
           { data.movies &&  data.movies.map(movie => {
             return (
-              <tr key={movie.id} bgcolor={movie.watched ? '#D8FAE7' : '#FAD2C9'}>
+              <tr key={movie.id}>
                 <td>{movie.name}</td>
                 <td>{movie.genre}</td>
                 <td>{movie.director ? movie.director.name : 'Нет данных'}</td>
@@ -129,7 +129,10 @@ export const MoviesTable = () => {
                   <input type='checkbox' disabled defaultChecked={movie.watched}/>
                 </td>
                 <td>
-                  <button onClick={() => handleClickOpen({
+                  <Button
+                    size="small"
+                    color='primary'
+                    onClick={() => handleClickOpen({
                     id: movie.id,
                     name: movie.name,
                     genre: movie.genre,
@@ -138,11 +141,14 @@ export const MoviesTable = () => {
                     watched: movie.watched
                   })}>
                     edit
-                  </button>
+                  </Button>
 
-                  <button onClick={() => handleClickDelete(movie.id)}>
+                  <Button
+                    size="small"
+                    color='primary'
+                    onClick={() => handleClickDelete(movie.id)}>
                     delete
-                  </button>
+                  </Button>
                 </td>
               </tr>
             )

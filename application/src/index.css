@@ -12,14 +12,6 @@ code {
     monospace;
 }
 
-#root {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
 td,
 th {
   padding: 10px 20px;
@@ -40,38 +32,20 @@ caption {
   margin: 20px 0;
 }
 
-.btn-adding {
-  font-size: 20px;
-  width: 40px;
-  height: 40px;
-  margin-left: 20px;
+.btn-fixed {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+}
+
+.btn-close {
+  width: 100px;
+  border-radius: 40px;
 }
 
 fieldset {
   display: flex;
   flex-direction: column;
-}
-
-input[type='text'],
-input[type='number'],
-select
-{
-  padding: 5px 15px;
-  margin: 3px 0 10px 0;
-}
-
-.btn-submit {
-  margin-top: 10px;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  font-size: 14px;
-}
-
-.label-row {
-  flex-direction: row;
 }
 
 .dialog {
@@ -88,24 +62,32 @@ label {
 
 form {
   background-color: #fff;
-  width: 400px;
   padding: 20px;
-}
-
-.btn-close {
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  font-size: 20px;
+  width: 70%;
+  margin: 160px auto;
 }
 
 .search-line {
+  width: 70%;
+}
+
+/*Custom MUI*/
+.mui-tabs__pane.mui--is-active {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
-.search-line input {
-  height: 26px;
-  width: 500px;
-  margin: 0;
+.mui-table {
+  width: 70%;
+  background-color: rgba(0,0,0,0.05);
+}
+
+.mui-table tr th:last-child {
+  width: 147px;
+}
+
+.mui-select>select {
+  padding-left: 15px;
 }
