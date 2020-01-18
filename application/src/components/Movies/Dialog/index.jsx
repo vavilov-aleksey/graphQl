@@ -120,7 +120,7 @@ export const DialogMovie = ({ data, onClose, onSave }) => {
             />
 
             <Select name="Режисер" label="Режисер" defaultValue={directorId ? directorId : 0} onChange={changeSelectedDirector}>
-              <Option disabled value='0' label="Выберете режисера" />
+              <Option disabled value='0' label="Выберите режисера" />
               {dataDirectors.data &&
               dataDirectors.data.directors.map(director =>
                 <Option key={director.id} value={director.id} label={director.name} />

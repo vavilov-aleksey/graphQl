@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import { useQuery, useMutation } from "react-apollo";
 import { moviesQuery } from "./queries";
-import { DialogMovie } from "../DialogMovie";
+import { DialogMovie } from "../Dialog";
 import Button from 'muicss/lib/react/button';
-import { SearchLine } from "../SearchLine";
+import { SearchLine } from "../../SearchLine";
 
 import {
   addMovieMutation,
   deleteMovieMutation,
   updateMovieMutation
-} from "../DialogMovie/mutation";
-import { directorsQuery } from "../DirectorsTable/queries";
+} from "../Dialog/mutation";
+import { directorsQuery } from "../../Directors/Table/queries";
 
 export const MoviesTable = () => {
   const [name, setName] = useState('');
@@ -115,49 +115,47 @@ export const MoviesTable = () => {
           >+</Button>
           <table className="mui-table mui-table--bordered">
             <thead>
-            <tr>
-              <th>Название</th>
-              <th>Жанр</th>
-              <th>Режисер</th>
-              <th>Рейтинг</th>
-              <th>Просмотрен</th>
-              <th>&nbsp;</th>
-            </tr>
+              <tr>
+                <th>Название</th>
+                <th>Жанр</th>
+                <th>Режисер</th>
+                <th>Рейтинг</th>
+                <th>Просмотрен</th>
+                <th>&nbsp;</th>
+              </tr>
             </thead>
             <tbody>
-            { data.movies &&  data.movies.map(movie => {
-              return (
-                <tr key={movie.id}>
-                  <td>{movie.name}</td>
-                  <td>{movie.genre}</td>
-                  <td>{movie.director ? movie.director.name : 'Нет данных'}</td>
-                  <td>{movie.rate}</td>
-                  <td>{movie.watched ? 'Да' : 'Нет'}</td>
-                  <td>
-                    <Button
-                      size="small"
-                      color='primary'
-                      onClick={() => handleClickOpen({
-                        id: movie.id,
-                        name: movie.name,
-                        genre: movie.genre,
-                        directorId: movie.director && movie.director.id,
-                        rate: movie.rate,
-                        watched: movie.watched
-                      })}>
-                      edit
-                    </Button>
+            { data.movies &&  data.movies.map(movie =>
+              <tr key={movie.id}>
+                <td>{movie.name}</td>
+                <td>{movie.genre}</td>
+                <td>{movie.director ? movie.director.name : 'Нет данных'}</td>
+                <td>{movie.rate}</td>
+                <td>{movie.watched ? 'Да' : 'Нет'}</td>
+                <td>
+                  <Button
+                    size="small"
+                    color='primary'
+                    onClick={() => handleClickOpen({
+                      id: movie.id,
+                      name: movie.name,
+                      genre: movie.genre,
+                      directorId: movie.director && movie.director.id,
+                      rate: movie.rate,
+                      watched: movie.watched
+                    })}>
+                    edit
+                  </Button>
 
-                    <Button
-                      size="small"
-                      color='primary'
-                      onClick={() => handleClickDelete(movie.id)}>
-                      delete
-                    </Button>
-                  </td>
-                </tr>
-              )
-            })}
+                  <Button
+                    size="small"
+                    color='primary'
+                    onClick={() => handleClickDelete(movie.id)}>
+                    delete
+                  </Button>
+                </td>
+              </tr>
+            )}
             </tbody>
           </table>
 

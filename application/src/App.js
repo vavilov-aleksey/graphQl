@@ -1,8 +1,8 @@
 import React from 'react';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
-import { MoviesTable } from "./components/MoviesTable";
-import { DirectorsTable } from "./components/DirectorsTable";
+import { MoviesTable } from "./components/Movies/Table";
+import { DirectorsTable } from "./components/Directors/Table";
 import Tabs from 'muicss/lib/react/tabs';
 import Tab from 'muicss/lib/react/tab';
 

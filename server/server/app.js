@@ -4,7 +4,7 @@ const schema = require('../schema/schema');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const password = 12345;
+const password = encodeURIComponent('12345');
 
 const app = express();
 const PORT = 8080;

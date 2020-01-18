@@ -1,17 +1,17 @@
 import React, {useState} from 'react';
 import { useQuery, useMutation } from "react-apollo";
 import { directorsQuery } from "./queries";
-import { DialogDirector } from "../DialogDirector";
+import { DialogDirector } from "../Dialog";
 import Button from 'muicss/lib/react/button';
-import { SearchLine } from "../SearchLine";
+import { SearchLine } from "../../SearchLine";
 
 import {
   addDirectorMutation,
   deleteDirectorMutation,
   updateDirectorMutation
-} from "../DialogDirector/mutations";
-import { BtnAdd } from "../BtnAdd";
-import { moviesQuery } from "../MoviesTable/queries";
+} from "../Dialog/mutations";
+import { BtnAdd } from "../../BtnAdd";
+import { moviesQuery } from "../../Movies/Table/queries";
 
 export const DirectorsTable = () => {
   const [name, setName] = useState('');
@@ -90,51 +90,49 @@ export const DirectorsTable = () => {
 
           <table className="mui-table mui-table--bordered">
             <thead>
-            <tr>
-              <th>Ф.И.О</th>
-              <th>Возраст</th>
-              <th>Снятые фильмы</th>
-              <th>&nbsp;</th>
-            </tr>
+              <tr>
+                <th>Ф.И.О</th>
+                <th>Возраст</th>
+                <th>Снятые фильмы</th>
+                <th>&nbsp;</th>
+              </tr>
             </thead>
             <tbody>
-            { data.directors &&  data.directors.map(director => {
-              return (
-                <tr key={director.id}>
-                  <td>{director.name}</td>
-                  <td>{director.age}</td>
-                  <td>
-                    {!director.movies
-                      ? 'Нет снятых фильмов.'
-                      : <ul>
-                        {director.movies.map(movie =>
-                          <li key={movie.id}>{movie.name}</li>
-                        )}
-                      </ul>
-                    }
-                  </td>
-                  <td>
-                    <Button
-                      size="small"
-                      color='primary'
-                      onClick={() => handleClickOpen({
-                        id: director.id,
-                        name: director.name,
-                        age: director.age
-                      })}>
-                      edit
-                    </Button>
+            { data.directors &&  data.directors.map(director =>
+              <tr key={director.id}>
+                <td>{director.name}</td>
+                <td>{director.age}</td>
+                <td>
+                  {!director.movies
+                    ? 'Нет снятых фильмов.'
+                    : <ul>
+                      {director.movies.map(movie =>
+                        <li key={movie.id}>{movie.name}</li>
+                      )}
+                    </ul>
+                  }
+                </td>
+                <td>
+                  <Button
+                    size="small"
+                    color='primary'
+                    onClick={() => handleClickOpen({
+                      id: director.id,
+                      name: director.name,
+                      age: director.age
+                    })}>
+                    edit
+                  </Button>
 
-                    <Button
-                      size="small"
-                      color='primary'
-                      onClick={() => handleClickDelete(director.id)}>
-                      delete
-                    </Button>
-                  </td>
-                </tr>
-              )
-            })}
+                  <Button
+                    size="small"
+                    color='primary'
+                    onClick={() => handleClickDelete(director.id)}>
+                    delete
+                  </Button>
+                </td>
+              </tr>
+            )}
             </tbody>
           </table>
 

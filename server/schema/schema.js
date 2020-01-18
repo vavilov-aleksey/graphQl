@@ -24,8 +24,7 @@ const MovieType = new GraphQLObjectType({
     watched: { type: GraphQLNonNull(GraphQLBoolean) },
     director: {
       type: DirectorType,
-      resolve(parent, args) {
-        // return directors.find(director => director.id == parent.id);
+      resolve(parent) {
         return Directors.findById(parent.directorId);
       }
     }
@@ -40,8 +39,7 @@ const DirectorType = new GraphQLObjectType({
     age: { type: GraphQLNonNull(GraphQLInt) },
     movies: {
       type: GraphQLList(MovieType),
-      resolve(parent, args) {
-        // return movies.filter(movie => movie.directorId === parent.id)
+      resolve(parent) {
         return Movies.find({ directorId: parent.id});
       }
     }
@@ -153,7 +151,6 @@ const Query = new GraphQLObjectType({
       type: MovieType,
       args: { id: { type: GraphQLID }},
       resolve(parent, args) {
-        // return movies.find(movie => movie.id == args.id);
         return Movies.findById(args.id)
       }
     },
@@ -162,7 +159,6 @@ const Query = new GraphQLObjectType({
       type: DirectorType,
       args: { id: { type: GraphQLID }},
       resolve(parent, args) {
-        // return directors.find(director => director.id == args.id);
         return Directors.findById(args.id)
       }
     },
